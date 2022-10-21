@@ -1,14 +1,15 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import DetailNote from "../components/DetailNote";
 import { archiveNote, deleteNotes, getNote, unarchiveNote } from "../utils/api";
 
 const DetailPage = () => {
+    const {id} = useParams();
     const navigate = useNavigate();
     const [note, setNote] = React.useState([]);
 
     React.useEffect(() => {
-        getNote().then(({data}) => {
+        getNote(id).then(({data}) => {
             setNote(data);
         });
     }, []);
