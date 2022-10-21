@@ -6,29 +6,37 @@ import { Routes, Route, Link } from "react-router-dom";
 import HomePage from "./page/HomePage";
 import Navigation from "./components/Navigation";
 import { useNavigate } from "react-router-dom";
+import AddPage from "./page/AddPage";
+import DetailPage from "./page/DetailPage";
 
 const App = () => {
-    const [authedUser, setAuthedUser] = React.useState('');
+    const [authedUser, setAuthedUser] = React.useState(null);
     const navigate = useNavigate();
     
     
     async function onLoginSuccess({accessToken}) {
         putAccessToken(accessToken);
         const { data } = await getUserLogged();
-        setAuthedUser(data);
+        return setAuthedUser(data);
     }
     
+    React.useEffect(() => {
+        getUserLogged().then(({data}) => {
+            setAuthedUser(data);
+        });
+    }, []);
+
     const onLogout = () => {
-        setAuthedUser('');
+        setAuthedUser(null);
         putAccessToken('');
         
-        if(authedUser === ''){
+        if(authedUser === null){
             navigate('/');
         }
     }
 
     
-    if(authedUser === ''){
+    if(authedUser === null){
         return (
             <>
                 <Routes>
@@ -47,6 +55,8 @@ const App = () => {
             </header>
             <Routes>
                 <Route path="/" element={<HomePage />} />
+                <Route path="/add" element={<AddPage />} />
+                <Route path="/notes/:id" element={<DetailPage />} />
             </Routes>
         </div>
     )

@@ -112,14 +112,13 @@ async function getArchiveNotes() {
 
 async function getNote(id) {
     const response = await fetchWithToken(`${BASE_URL}/notes/${id}`);
-    const responseJSON = await response.json();
-
-    if(responseJSON.status !== 'success'){
-        alert(responseJSON.message);
-        return { error: true,  data: null };
+    const responseJson = await response.json();
+  
+    if (responseJson.status !== 'success') {
+      return { error: true, data: null };
     }
-
-    return { error: false,  data: responseJSON.data };
+  
+    return { error: false, data: responseJson.data };
 }
 
 async function archiveNote(id) {
