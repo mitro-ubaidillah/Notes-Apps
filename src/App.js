@@ -8,6 +8,7 @@ import Navigation from "./components/Navigation";
 import { useNavigate } from "react-router-dom";
 import AddPage from "./page/AddPage";
 import DetailPage from "./page/DetailPage";
+import ArchivedPage from "./page/ArchivedPage";
 
 const App = () => {
     const [authedUser, setAuthedUser] = React.useState(null);
@@ -57,6 +58,7 @@ const App = () => {
                 <Route path="/" element={<HomePage />} />
                 <Route path="/add" element={<AddPage />} />
                 <Route path="/notes/:id" element={<DetailPage />} />
+                <Route path="/archives" element={<ArchivedPage />} />
             </Routes>
         </div>
     )

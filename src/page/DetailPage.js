@@ -12,7 +12,7 @@ const DetailPage = () => {
         getNote(id).then(({data}) => {
             setNote(data);
         });
-    }, []);
+    }, [id]);
 
     async function onDeleteHandler(id) {
         await deleteNotes(id);
@@ -30,7 +30,7 @@ const DetailPage = () => {
     }
 
 
-    if(!note) {
+    if(note.length === 0) {
         return (
             <section className="notes-list-empty">
                 <p className="notes-list__empty">Catatan Tidak ditemukan</p>
@@ -40,8 +40,16 @@ const DetailPage = () => {
 
     return (
         <section className="detail-page">
-            <DetailNote id={note.id} title={note.title} body={note.body}
-            createdAt={note.createdAt} onDelete={onDeleteHandler} onArchive={onArchiveHandler} unArchive={unArchiveHandler} />
+            <DetailNote
+                id={note.id}
+                title={note.title}
+                createdAt={note.createdAt}
+                body={note.body}
+                archived={note.archived} 
+                onDelete={onDeleteHandler} 
+                onArchive={onArchiveHandler} 
+                unArchive={unArchiveHandler} 
+            />
         </section>
     )
 }

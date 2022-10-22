@@ -4,8 +4,9 @@ import { showFormattedDate } from "../utils";
 import DeleteButton from "./DeleteButton";
 import ArchiveButton from "./ArchiveButton";
 
-const DetailNote = ({ title, body, createdAt, archived, onArchive, unArchive, onDelete, id }) => {
-    return (
+
+const DetailNote = ({title, createdAt, body, archived, onArchive, onDelete, id, unArchive}) => {
+    return(
         <>
             <h3 className="detail-page__title">{title}</h3>
             <p className="detail-page__createdAt">{showFormattedDate(createdAt)}</p>
@@ -15,7 +16,7 @@ const DetailNote = ({ title, body, createdAt, archived, onArchive, unArchive, on
                 <DeleteButton id={id} onDelete={onDelete} />
             </section>
         </>
-    )
+    );
 }
 
 DetailNote.propTypes = {
