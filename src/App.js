@@ -9,11 +9,14 @@ import { useNavigate } from "react-router-dom";
 import AddPage from "./page/AddPage";
 import DetailPage from "./page/DetailPage";
 import ArchivedPage from "./page/ArchivedPage";
+import NavigationLocale from "./components/NavigationLocale";
+import LocaleContext from "./context/LocaleContext";
 
 const App = () => {
     const [authedUser, setAuthedUser] = React.useState(null);
     const navigate = useNavigate();
-    
+    const [locale, setLocale] = React.useState(localStorage.getItem('locale') || 'id');
+    const [theme, setTheme] = React.useState(localStorage.getItem('theme') || 'light');
     
     async function onLoginSuccess({accessToken}) {
         putAccessToken(accessToken);
@@ -27,6 +30,10 @@ const App = () => {
         });
     }, []);
 
+    React.useEffect(() => {
+        document.documentElement.setAttribute('data-theme', theme);
+    })
+
     const onLogout = () => {
         setAuthedUser(null);
         putAccessToken('');
@@ -36,31 +43,72 @@ const App = () => {
         }
     }
 
+    const toggleLocale = () => {
+        setLocale((prevLocale) => {
+            const newLocale = prevLocale === 'id' ? 'en' : 'id';
+            localStorage.setItem('locale', newLocale);
+            return newLocale;
+        });
+    };
+
+    const toggleTheme = () => {
+        setTheme((prevTheme) => {
+            const newTheme = prevTheme === 'light' ? 'dark' : 'light';
+            localStorage.setItem('theme', newTheme);
+            return newTheme;
+        });
+    }
+
+    const localeContextValue = React.useMemo(() => {
+        return {
+          locale,
+          toggleLocale,
+          theme,
+          toggleTheme,
+        };
+      }, [locale,theme]);
+
     
     if(authedUser === null){
         return (
             <>
-                <Routes>
-                    <Route path="/*" element={<LoginPage loginSuccess={onLoginSuccess} />} />
-                    <Route path="/register" element={ <RegisterPage /> } />
-                </Routes>
+                <LocaleContext.Provider value={localeContextValue}>
+                    <div className="app-container">
+                        <header>
+                            <h1>{locale === 'id' ? 'Aplikasi Catatan Harian' : 'Daily Note Apps'}</h1>
+                            <NavigationLocale />
+                        </header>
+                        <main>
+                            <Routes>
+                                <Route path="/*" element={<LoginPage loginSuccess={onLoginSuccess} />} />
+                                <Route path="/register" element={ <RegisterPage /> } />
+                            </Routes>
+                        </main>
+                    </div>
+                </LocaleContext.Provider>
             </>
         );
     }
 
     return (
-        <div className="">
-            <header>
-                <h1><Link to="/">Aplikasi Catatan</Link></h1>
-                <Navigation logout={onLogout} name={authedUser.name} />
-            </header>
-            <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/add" element={<AddPage />} />
-                <Route path="/notes/:id" element={<DetailPage />} />
-                <Route path="/archives" element={<ArchivedPage />} />
-            </Routes>
-        </div>
+        <>
+            <LocaleContext.Provider value={localeContextValue}>
+                <div className="app-container">
+                    <header>
+                        <h1><Link to="/">{locale === 'id' ? 'Aplikasi Catatan Harian' : 'Daily Note Apps'}</Link></h1>
+                        <Navigation logout={onLogout} name={authedUser.name} toggleLocale={toggleLocale} toggleTheme={toggleTheme}/>
+                    </header>
+                    <main>
+                        <Routes>
+                            <Route path="/" element={<HomePage />} />
+                            <Route path="/add" element={<AddPage />} />
+                            <Route path="/notes/:id" element={<DetailPage />} />
+                            <Route path="/archives" element={<ArchivedPage />} />
+                        </Routes>
+                    </main>
+                </div>
+            </LocaleContext.Provider>
+        </>
     )
 }
 

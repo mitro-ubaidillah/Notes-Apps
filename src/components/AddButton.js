@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 
 const AddButton = () => {
     return (
-        <div>
+        <div className="homepage__action">
             <Link to="/add">
-                <button type="button">{<FiPlus />}</button>
+                <button type="button" className="action">{<FiPlus />}</button>
             </Link>
         </div>
     )

@@ -3,22 +3,24 @@ import { login } from "../utils/api";
 import LoginInput from "../components/LoginInput";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import LocaleContext from "../context/LocaleContext";
 
-const LoginPage = ({loginSuccess}) => {
+const LoginPage = ({ loginSuccess }) => {
+    const { locale } = React.useContext(LocaleContext);
     
     async function onLogin(user) {
         const { error, data } = await login(user);
 
-        if(!error) {
+        if (!error) {
             loginSuccess(data);
         }
     }
 
     return (
-        <section>
-            <h2>Silakan masuk untuk melanjutkan...</h2>
-            <LoginInput  login={onLogin} />
-            <p>Belum punya akun, <Link to="/register">daftar disni</Link></p>
+        <section className="input-login">
+            <h2>{locale === 'id' ? 'Yuk, login dulu' : 'Please, first login '}</h2>
+            <LoginInput login={onLogin} locale={locale}/>
+            <p>{locale === 'id' ? 'Belum punya akun ? ': "Don't have an account ? " } <Link to="/register">{locale === 'id' ? 'Daftar disni' : 'Register here' }</Link></p>
         </section>
     )
 }
