@@ -1,12 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 import useInput from "./hooks/useInput";
+import LocaleContext from "../context/LocaleContext";
 
-const RegisterInput = ({register, locale}) => {
+const RegisterInput = ({register}) => {
     const [email, onChangeEmail] = useInput('');
     const [name, onChangeName] = useInput('');
     const [password, onChangePassword] = useInput('');
     const [passwordConfirm, onChangePasswordConfirm] = useInput('');
+    const { locale } = React.useContext(LocaleContext);
 
     const onSubmitHandler = (event) => {
         event.preventDefault();
@@ -28,7 +30,6 @@ const RegisterInput = ({register, locale}) => {
 
 RegisterInput.propTypes = {
     register: PropTypes.func.isRequired,
-    locale: PropTypes.string.isRequired
 }
 
 export default RegisterInput;

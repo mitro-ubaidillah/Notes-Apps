@@ -1,10 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import useInput from "./hooks/useInput";
+import LocaleContext from "../context/LocaleContext";
 
-const LoginInput = ({login, locale}) => {
+const LoginInput = ({login}) => {
     const [email, onChangeEmail] = useInput('');
     const [password, onChangePassword] = useInput('');
+    const { locale } = React.useContext(LocaleContext);
 
     const onSubmitHandler = (event) => {
         event.preventDefault();

@@ -4,6 +4,7 @@ import NoteList from "../components/NoteList";
 import AddButton from "../components/AddButton";
 import SearchBar from "../components/SearchBar";
 import { useSearchParams } from "react-router-dom";
+import LocaleContext from "../context/LocaleContext";
 
 const HomePage = () => {
     const [notes, setNotes] = React.useState([]);
@@ -11,6 +12,7 @@ const HomePage = () => {
     const [keyword, setKeyword] = React.useState(() => {
         return searchParams.get('keyword') || ''
     });
+    const { locale } = React.useContext(LocaleContext);
 
     React.useEffect(() => {
         getNotes().then(({ data }) => {
@@ -31,7 +33,7 @@ const HomePage = () => {
 
     return (
         <section className="homepage">
-            <h2>Daftar Catatan</h2>
+            <h2>{locale === 'id' ? 'Daftar Catatan' : 'Note Lists'}</h2>
             <SearchBar keyword={keyword} keywordChange={onKeywordChangeHandler} />
             <NoteList notes={filteredNotes} />
             <AddButton />

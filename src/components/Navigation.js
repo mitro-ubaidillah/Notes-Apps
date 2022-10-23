@@ -26,8 +26,6 @@ const Navigation = ({ name, logout }) => {
 Navigation.propTypes = {
     name: PropTypes.string.isRequired,
     logout: PropTypes.func.isRequired,
-    toggleLocale: PropTypes.func.isRequired,
-    toggleTheme: PropTypes.func.isRequired
 }
 
 export default Navigation;
